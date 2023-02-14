@@ -1,6 +1,6 @@
 import express from "express";
 import ProductsModel from "./model.js";
-// import createHttpError from "../../errorHandlers.js";
+import createHttpError from "http-errors";
 
 const productsRouter = express.Router();
 
@@ -29,9 +29,7 @@ productsRouter.get("/:id", async (req, res, next) => {
     if (product) {
       res.send(product);
     } else {
-      next(
-        createHttpError(404, `Author with id ${req.params.authorId} not found!`)
-      );
+      next(createHttpError(404, `Author with id ${req.params.id} not found!`));
     }
   } catch (error) {
     next(error);

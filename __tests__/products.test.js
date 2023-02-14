@@ -68,7 +68,6 @@ describe("Test APIs", () => {
 
   it("Should test that GET /products returns a success status and a body", async () => {
     const response = await client.get("/products").expect(200);
-    console.log(response.body);
   });
 
   it("Should test that POST /products with a not valid product returns a 400", async () => {
@@ -76,7 +75,7 @@ describe("Test APIs", () => {
   });
 
   it("Should test that GET /products/:id returns the correct product with a valid id", async () => {
-    await client.get("/products/63eb95616435069f73f61610").expect(404);
+    await client.get("/products/123456123456123456123456").expect(404);
   });
 
   // it("Should DELETE the /products/:id", async () => {
