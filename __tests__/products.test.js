@@ -74,11 +74,19 @@ describe("Test APIs", () => {
     await client.post("/products").send(notValidProduct).expect(400);
   });
 
-  it("Should test that GET /products/:id returns the correct product with a valid id", async () => {
-    await client.get("/products/123456123456123456123456").expect(404);
+  it("Should test that GET /products/:id returns a non-existing id", async () => {
+    await client.get("/products/63eba00221b3ac83ca458dac").expect(404);
   });
 
-  // it("Should DELETE the /products/:id", async () => {
-  //   const delete = await client.delete
-  // })
+  it("Should DELETE the /products/:id", async () => {
+    await client.delete("/products/63eba2e751fc8b9e79723984").expect(404);
+  });
+
+  it("Should PUT", async () => {
+    await client
+      .put("/products/63eba62060e26732098dc014")
+      .send({ name: lola })
+      .expect(200)
+      .expect(response.body.name).toBeDefined;
+  });
 });
