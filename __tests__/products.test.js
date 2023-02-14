@@ -36,6 +36,8 @@ const notValidProduct = {
   price: 100,
 };
 
+let validId;
+
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL_TEST);
   const product = new ProductsModel({
@@ -43,6 +45,7 @@ beforeAll(async () => {
     description: "blalblabla",
     price: 20,
   });
+  validId = product._id;
   await product.save();
 });
 // beforeAll is a Jest hook ran before all the tests, usually it is used to connect to the db and to do some initial setup (like inserting some mock data in the db)
@@ -78,15 +81,16 @@ describe("Test APIs", () => {
     await client.get("/products/63eba00221b3ac83ca458dac").expect(404);
   });
 
-  it("Should DELETE the /products/:id", async () => {
-    await client.delete("/products/63eba2e751fc8b9e79723984").expect(404);
+  it("Should PUT", async () => {
+    const response = await client
+      .put("/products/" + validId)
+      .send({ name: "lola" })
+      .expect(200);
+
+    expect(response.body.name).toBe("lola");
   });
 
-  it("Should PUT", async () => {
-    await client
-      .put("/products/63eba62060e26732098dc014")
-      .send({ name: lola })
-      .expect(200)
-      .expect(response.body.name).toBeDefined;
+  it("Should DELETE the /products/:id", async () => {
+    await client.delete("/products/" + validId).expect(204);
   });
 });
